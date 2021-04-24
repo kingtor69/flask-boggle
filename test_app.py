@@ -21,3 +21,13 @@ class FlaskTests(TestCase):
             res = client.get('/board')
             html = res.get_data(as_text=True)
             self.assertEqual(res.status_code, 200)
+            self.assertIn('Game #', html)
+            self.assertEqual(len(board), 5)
+            self.assertEqual(len(board[3]), 5)
+
+    def test_reset(self):
+        with app.test_client() as client:
+            res = client.get('/reset')
+            self.assertEqual(res.status_code, 302)
+            self.assertIs(session.get('is_game_on'), False)
+            

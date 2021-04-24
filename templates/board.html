@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
 {% block tab_title %}Flask Boggle{% endblock %}
 <!-- {% block staticroute %}./{% endblock %} -->
-{% block header %}Oh, it's on!{{ session['game_num']}}{% endblock %}
+{% block header %}Oh, it's on!{% endblock %}
 {% block content %}
-<div class="container">
-    <table>
-        <thead>
-            <td colspan = 5></td>
-        </thead>
+<div class="container fluid">
+    <br>
+    <table class="boggle-board">
+        <thead class="text-center">
+            <tr class="row justify-content-center">
+                <th colspan="5">Game #{{ session['game_num']}}</td>
+            </tr>
+    </thead>
         <tbody>
-            {% for row in session['board'] %}
-            <tr>
-            {% for col in row %}
-                <td>{{ session['board'][row][col] }}</td>
+            {% for row in range(5) %}
+            <tr class="row justify-content-between">
+            {% for col in range(5) %}
+                <td class="col text-center" id="{{row}}-{{col}}">{{ board[row][col] }}</td>
             {% endfor %}
             </tr>
             {% endfor %}

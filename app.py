@@ -10,20 +10,31 @@ from boggle import Boggle
 
 @app.route('/')
 def load_home_page():
-    if session.get('is_game_on'):
-        return redirect('board')
-    game_num = session.get('game_num', 0)
-    game_num += 1
-    session['game_num'] = game_num
-    return render_template('home.html')
+    if session.get('is_game_on') and session.get('board'):
+
+        return render_template('board.html, board = session['board'])
+    return redirect('/reset')
 
 @app.route('/board')
 def load_board():
-    game_on = session.get('is_game_on', False)
-    if game_on:
-        flash('write some game_on logic', 'troubleshooting')
-    else:
-        flash('write some new_game logic', 'troubleshooting')
-    (rows, columns) = board_size(session['board'])
+    game_on = request.args['play']
+    session['is_game_on'] = game_on
+    if not game_on:
+        flash('something went wrong, please try again', 'info')
+        return redirect('/')
 
-    return render_tamplate('board.html', )
+    game_num = session.get('game_num', 0)
+    game_num += 1
+    session['game_num'] = game_num
+
+    this_game = Boggle()
+    board = this_game.make_board()
+    session['board'] = board
+    flash("Let's play!", "info")
+    return render_template('board.html', board = board)
+
+@app.route('/reset')
+def reset_session_restart():
+    session.clear()
+    session['is_game_on'] = False
+    return render_template ('home.html')
