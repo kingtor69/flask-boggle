@@ -11,8 +11,8 @@ from boggle import Boggle
 @app.route('/')
 def load_home_page():
     if session.get('is_game_on') and session.get('board'):
-
-        return render_template('board.html, board = session['board'])
+        board = session['board']
+        return render_template('board.html', board = board)
     return redirect('/reset')
 
 @app.route('/board')
