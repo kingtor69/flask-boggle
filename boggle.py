@@ -143,3 +143,5 @@ class Boggle():
         # Sad panda.
 
         return False
+
+# from here down is entirely written by Tor Kingdon
