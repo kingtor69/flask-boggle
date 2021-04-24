@@ -1,31 +1,16 @@
 {% extends 'base.html' %}
-{% block tab_title %}Take Our Survey{% endblock %}
+{% block tab_title %}Flask Boggle{% endblock %}
 <!-- {% block staticroute %}./{% endblock %} -->
-{% block header %}Would you be so kind as to take a survey?{% endblock %}
+{% block header %}Let's Boggle it Up!{% endblock %}
 {% block content %}
 <div class="container">
-  <table class="table table-dark table-striped rounded">
-    <thead>
-      <th>Name</th>
-      <th>Instructions</th>
-      <th>select</th>
-    </thead>
-    <tbody>
-      <form action="/question/0" method="POST">
-        {% for survey in surveys %}
-        {% for complete_survey in session['completed_surveys'] %}
-        {% if complete_survey.count(survey) == 0 %}
-        <tr>
-          <td>{{surveys[survey].title}}</td>
-          <td>{{surveys[survey].instructions}}</td>
-          <td><button class="btn, btn-outline-primary rounded" name="key" value="{{survey}}">take this survey</button></td>
-        </tr>
-        {% endif %}
-        {% endfor %}
-        {% endfor %}
-      </form>
-    </tbody>
-  </table>
+  <div class="d-none">
+    <h2>instructions:</h2>
+    <p>Maybe I should write some instructions. Maybe I won't, though.</p>
+  </div>
+<form action="/question/0" method="POST">
+    <h2><button class="btn btn-outline-primary rounded btn-block" name="play" value="True">Let's Play!</button></h2>
+  </form>
   <br>
   <br>
   <div class="row justify-content-center">
