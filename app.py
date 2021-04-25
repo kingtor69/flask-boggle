@@ -14,12 +14,9 @@ def load_home_page():
 
 @app.route('/board')
 def load_board():
-    # game_on = request.args['play']
-    # session['is_game_on'] = game_on
-    # if not game_on:
-    #     flash('something went wrong, please try again', 'info')
-    #     return redirect('/')
-
+    if not request.args['play']:
+        flash("you must initiation a new game with the 'let's play' button on this page", "error")
+        return reredirect('/')
     game_num = session.get('game_num', 0)
     game_num += 1
     session['game_num'] = game_num
@@ -46,10 +43,11 @@ def play_a_word():
             flash (random_compliment, "thank_you")
     else:
         flash (f"Sorry, that word is {is_word_valid}.", "error")    
-    return render_template('board.html', board = board, len_correct_words = len(correct_words))
+    # return render_template('board.html', board = board, len_correct_words = len(correct_words))
+    return jsonify(correct_words)
 
 @app.route('/reset')
 def reset_session_restart():
     session.clear()
-    session['is_game_on'] = False
+    # session['is_game_on'] = False
     return redirect ('/')
