@@ -31,18 +31,20 @@ class Boggle():
 
     def check_valid_word(self, board, word):
         """Check if a word is a valid word in the dictionary and/or the boggle board"""
+        if len(word) > 2:
+            word_exists = word in self.words
+            valid_word = self.find(board, word.upper())
 
-        word_exists = word in self.words
-        valid_word = self.find(board, word.upper())
-
-        if word_exists and valid_word:
-            result = "ok"
-        elif word_exists and not valid_word:
-            # result message rewritten to be used in flash messages by Tog Kingdon
-            result = "not on this board"
+            if word_exists and valid_word:
+                result = "ok"
+            elif word_exists and not valid_word:
+                # result message rewritten to be used in flash messages by Tog Kingdon
+                result = "not on this board"
+            else:
+                # result message rewritten to be used in flash messages by Tog Kingdon
+                result = "not in our dictionary"
         else:
-            # result message rewritten to be used in flash messages by Tog Kingdon
-            result = "not in our dictionary"
+            result = "too short"
 
         return result
 
@@ -148,3 +150,6 @@ class Boggle():
 
 # from here down is entirely written by Tor Kingdon
 this_game = Boggle()
+
+compliments = ["good one!", "nice", "niiiiice", "beauty, eh?", "slick", "you're killing it!", "daddy needs a new pair of shoes", "snappy!", "momma's gotta bring home the bacon!", "yo", "¡muey caliente!", "delicious", "genau", "trés bien"]
+nicknames = ["slick", "fancypants", "homeslice", "cheeseball", "dog", "tiny", "biggie", "sneaky pie", "homey", "amigo", "knucklehead", "big dog", "two times", "shorty", "punch buggy", "buckethead", "grandma pumpkinhead", "homes", "bobby-bob"]

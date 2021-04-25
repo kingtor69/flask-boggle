@@ -10,14 +10,14 @@
             <table class="boggle-board">
                 <thead class="text-center">
                     <tr>
-                        <th colspan="5">Game #{{ session['game_num']}}</td>
+                        <th colspan="5" class="boggle-board text-center">Game #{{ session['game_num']}}</td>
                     </tr>
                 </thead>
                 <tbody>
                     {% for row in range(5) %}
                     <tr>
                     {% for col in range(5) %}
-                        <td class="col text-center" id="{{row}}-{{col}}">{{ board[row][col] }}</td>
+                        <td class="col text-center boggle-board" id="{{row}}-{{col}}">{{ board[row][col] }}</td>
                     {% endfor %}
                     </tr>
                     {% endfor %}
