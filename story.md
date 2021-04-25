@@ -17,10 +17,13 @@
     - is_game_on: boolean
     - board: list of lists for letter assignments in 5x5 board
     - correct_words: list of words that have been confirmed
+    - game_num: keep a count of how many games user has played
 
 ## STILL DO TO:
     - my word list tests are not working, might have to skip the idea of being random?
     - fix tile sizes to be uniform
     - double-check the assignment
+    - pretty sure session['is_game_on'] is pointless, since it's showing False as I play
+
 ## time permitting:
     - style up the word form

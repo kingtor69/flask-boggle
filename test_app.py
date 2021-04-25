@@ -4,10 +4,6 @@ from flask import session
 from boggle import Boggle
 from random import choice
 
-TEST_BOARD = [['K', 'U', 'J', 'M', 'I'], ['I', 'I', 'U', 'D', 'E'], ['C', 'V', 'K', 'S', 'O'], ['S', 'Z', 'E', 'R', 'S'], ['L', 'M', 'H', 'O', 'E']]
-TEST_SOME_CORRECT_WORDS = ['mud', 'sod', 'zero', 'hoe', 'judo', 'mid', 'dose', 'hero', 'horse', 'mess']
-TEST_SOME_NOT_IN_DICT_WORDS = ['cvks', 'duks', 'ciiv', 'zerk']
-TEST_SOME_NOT_ON_BOARD_WORDS = ['sour', 'ducks', 'civic', 'reek']
 
 
             # game is already going
@@ -21,11 +17,12 @@ TEST_SOME_NOT_ON_BOARD_WORDS = ['sour', 'ducks', 'civic', 'reek']
             #     res = client.get('/')
 
 
-class FlaskTests(TestCase):
+class BoggleSetUpTests(TestCase):
 
     # TODO -- write tests for every view function / feature!
     # the rest of the code, obviously enough, written by Tor Kingdon
     
+
     def test_home(self):
         with app.test_client() as client:
             res = client.get('/')
@@ -48,12 +45,30 @@ class FlaskTests(TestCase):
             self.assertEqual(res.status_code, 302)
             self.assertIs(session.get('is_game_on'), False)
             
+
+class BoggleGameplayTests(TestCase)
+
+    @classmethod
+    def setUp(self):
+        board = [['K', 'U', 'J', 'M', 'I'], ['I', 'I', 'U', 'D', 'E'], ['C', 'V', 'K', 'S', 'O'], ['S', 'Z', 'E', 'R', 'S'], ['L', 'M', 'H', 'O', 'E']]
+        correct_words = ['mud', 'sod', 'zero', 'hoe']
+        new_correct_words = ['judo', 'mid', 'dose', 'hero', 'horse', 'mess']
+        not_in_dic_words = ['cvks', 'duks', 'ciiv', 'zerk']
+        not_on_board_words = ['sour', 'ducks', 'civic', 'reek']
+        session['board'] = board
+        session['correct_words'] = correct_words
+        
+
+    def test_play_route(self):
+        with app.test_client() as client:
+            res = client.get('/play')
+            self.assertEqual(res.status_code, 200)
+
     def test_correct_plays(self):
         correct = choice(TEST_SOME_CORRECT_WORDS)
         with app.test_client() as client:
             res = client.get(f'/play/?word={correct}')
             html = res.get_data(as_text=True)
-            self.assertEqual(res.status_code, 200)
             self.assertIn(f'<li>{correct}</li>')
 
 
@@ -62,7 +77,6 @@ class FlaskTests(TestCase):
         with app.test_client() as client:
             res = client.get(f'/play/?word={non_word}')
             html = res.get_data(as_text=True)
-            self.assertEqual(res.status_code, 200)
             self.assertIn('<tag class="error pl-2 pr-2">Sorry, that word is not in our dictionary.</tag>', html)
 
     def test_non_board_plays(self):
@@ -70,7 +84,6 @@ class FlaskTests(TestCase):
         with app.test_client() as client:
             res = client.get(f'/play/?word={non_board}')
             html = res.get_data(as_test=True)
-            self.assertEqual(res.status_code, 200)
             self.assertIn('<tag class="error pl-2 pr-2">Sorry, that word is not on this board.</tag>', html)
 
 
