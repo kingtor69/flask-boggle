@@ -3,7 +3,8 @@ body {
 	color: white;
 }
 
-tag {
+tag,
+.tags {
 	font-size: 1.5rem;
 	border-radius: 6px;
 	/*  padding: 0.4rem;

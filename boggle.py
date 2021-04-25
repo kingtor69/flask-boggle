@@ -1,8 +1,10 @@
 """Utilities related to Boggle game."""
+# much of this code came from starter code by Rithm School and/or Springboard, expections noted
 
 from random import choice
-import string
-
+# import string
+# weighted_alphabet logic written by Tor to replace use of string
+from weighted_alphabet import weighted_uppercase_alphabet, random_letter_plus_combos
 
 class Boggle():
 
@@ -24,27 +26,27 @@ class Boggle():
         board = []
 
         for y in range(5):
-            row = [choice(string.ascii_uppercase) for i in range(5)]
+            # Tor Kingdon added "random" letter weighting with popular letter combinations
+            row = [random_letter_plus_combos() for i in range(5)]
             board.append(row)
 
         return board
 
     def check_valid_word(self, board, word):
         """Check if a word is a valid word in the dictionary and/or the boggle board"""
-        if len(word) > 2:
-            word_exists = word in self.words
-            valid_word = self.find(board, word.upper())
+        word_exists = word in self.words
+        valid_word = self.find(board, word.upper())
 
-            if word_exists and valid_word:
-                result = "ok"
-            elif word_exists and not valid_word:
-                # result message rewritten to be used in flash messages by Tog Kingdon
-                result = "not on this board"
-            else:
-                # result message rewritten to be used in flash messages by Tog Kingdon
-                result = "not in our dictionary"
+        if word_exists and valid_word:
+            result = "ok"
+        elif word_exists and not valid_word:
+            result = "not-on-board"
+            # result message rewritten to be used in flash messages by Tog Kingdon
+            # result = "not on this board"
         else:
-            result = "too short"
+            result = "not-word"
+            # result message rewritten to be used in flash messages by Tog Kingdon
+            # result = "not in our dictionary"
 
         return result
 
