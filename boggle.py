@@ -38,9 +38,11 @@ class Boggle():
         if word_exists and valid_word:
             result = "ok"
         elif word_exists and not valid_word:
-            result = "not-on-board"
+            # result message rewritten to be used in flash messages by Tog Kingdon
+            result = "not on this board"
         else:
-            result = "not-word"
+            # result message rewritten to be used in flash messages by Tog Kingdon
+            result = "not in our dictionary"
 
         return result
 
@@ -145,3 +147,4 @@ class Boggle():
         return False
 
 # from here down is entirely written by Tor Kingdon
+this_game = Boggle()

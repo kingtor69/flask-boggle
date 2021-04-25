@@ -45,8 +45,8 @@ th {
 	text-decoration: underline;
 	background-color: #07f;
 	color: white;
-	width: 30rem;
-	height: 6rem;
+	width: 400px;
+	height: 80px;
 	border: 0.1rem black solid;
 	border-radius: 1vw;
 	padding: 0.2rem;
@@ -58,9 +58,20 @@ td {
 	background-color: whitesmoke;
 	color: black;
 	font-weight: bolder;
-	width: 6rem;
-	height: 6rem;
+	width: 80px;
+	height: 80px;
 	border: 0.2rem black solid;
 	border-radius: 1vw;
 	padding: 0.2rem;
+}
+
+input .word-input {
+	font-size: 2rem;
+	height: 3rem;
+	border: 1px black solid;
+	border-radius: 6px;
+}
+
+.submit-butt {
+	border-radius: 4px;
 }
