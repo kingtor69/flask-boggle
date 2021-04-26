@@ -42,15 +42,13 @@ class BoggleGameplayTests(TestCase):
     @classmethod
     def setUp(self):
         with app.test_client() as client:
-            with client.session_transaction() as change_session:
-                board = [['K', 'U', 'J', 'M', 'I'], ['I', 'I', 'U', 'D', 'E'], ['C', 'V', 'K', 'S', 'O'], ['S', 'Z', 'E', 'R', 'S'], ['L', 'M', 'H', 'O', 'E']]
-                correct_words = ['mud', 'sod', 'zero', 'hoe']
-                new_correct_words = ['judo', 'mid', 'dose', 'hero', 'horse', 'mess']
-                not_in_dic_words = ['cvks', 'duks', 'ciiv', 'zerk']
-                not_on_board_words = ['sour', 'ducks', 'civic', 'reek']
-                change_session['board'] = board
-                change_session['correct_words'] = correct_words
-                change_session['game_num'] = '1'
+            with client.session_transaction() as sess:
+                sess['board'] = [['K', 'U', 'J', 'M', 'I'], ['I', 'I', 'U', 'D', 'E'], ['C', 'V', 'K', 'S', 'O'], ['S', 'Z', 'E', 'R', 'S'], ['L', 'M', 'H', 'O', 'E']]
+                sess['correct_words'] = ['mud', 'sod', 'zero', 'hoe']
+                # new_correct_words = ['judo', 'mid', 'dose', 'hero', 'horse', 'mess']
+                # not_in_dic_words = ['cvks', 'duks', 'ciiv', 'zerk']
+                # not_on_board_words = ['sour', 'ducks', 'civic', 'reek']
+                sess['game_num'] = '1'
     
     def test_board(self):
         with app.test_client() as client:
@@ -62,4 +60,22 @@ class BoggleGameplayTests(TestCase):
     def test_played_word_correct(self):
         with app.test_client() as client:
             res = client.get('/played-word?word=judo')
+            self.assertEqual(res.status_code, 200)
+            self.assertEqual(response.json['result'], 'ok')
+
+    def test_played_word_not_on_board(self):
+        with app.test_client() as client:
+            res = client.get('/played-word?word=sour')
+            self.assertEqual(res.status_code, 200)
+            self.assertEqual(response.json['result'], 'not-on-board')
+
+    def test_played_not_word(self):
+        with app.test_client() as client:
+            res = client.get('/played-word?word=duks')
+            self.assertEqual(res.status_code, 200)
+            self.assertEqual(response.json['result'], 'not-word')
+
+    def test_post_score(self):
+        with app.test_client() as client:
+            res = client.post('/post-score', {"data": {"score": "87"}})
             self.assertEqual(res.status_code, 200)
