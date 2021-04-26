@@ -6,6 +6,8 @@ from boggle import Boggle, this_game, compliments, nicknames
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "damn-secret"
 
+debug = "DebugToolbarExtension(app)"
+
 this_game = Boggle()
 
 @app.route('/')
@@ -40,15 +42,15 @@ def load_board():
 
 @app.route('/played-word')
 def play_a_word():
-    """find out if word is a valid word
-    (valid: in our word list AND on the current board)"""
-    word = request.args["word"]
+    """find out if word is in our word list AND on the current board"""
+
     board = session["board"]
+    word = request.args["word"]
     response = boggle_game.check_valid_word(board, word)
 
     return jsonify({'result': response})
 
-@app.route("/process-score", methods=["POST"])
+@app.route("/post-score", methods=["POST"])
 def process_score():
     """receive score, update average_score, and update highscore if there is one."""
 

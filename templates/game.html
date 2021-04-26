@@ -4,10 +4,10 @@
 {% block header %}Oh, it's on!{% endblock %}
 {% block content %}
 <div class="container fluid">
-    <br>
+    <!-- <br>
     <div class="row">
         <h2><button id="not-a-button">please do not press this button</button></h2>
-    </div>
+    </div> -->
     <section id="boggle">
         <div class="row justify-content-center">
             <div class="col col-md-8 col-lg-6">
@@ -75,6 +75,6 @@
 {% endblock %}
 {% block scripts_after %}
     <script>
-        let game = new BoggleGame("boggle", 60, 5);
+        let game = new GameOBoggle("boggle", 60, 5);
     </script>
 {% endblock %}}

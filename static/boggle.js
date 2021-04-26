@@ -16,7 +16,7 @@ class GameOBoggle {
         // game_length measured in seconds
         this.secondsLeft = gameLength;
         this.boardSize = boardSize;
-        this.showTime();
+        this.showTimeLeft();
 
         this.gameScore = 0;
         this.doneWords = new Set();
@@ -26,9 +26,10 @@ class GameOBoggle {
         this.countdownClock = setInterval(this.second.bind(this), 1000);
 
         // define new word submit button. yeah, it's kinda important for playing the game, ya know?
-        $(".word-submit-form", this.game).on("submit", this.processNewWord.bind(this))
-        $("#not-a-button", this.game).on("click", console.log('I asked you not to do that.').bind(this))
-
+        document.addEventListener("DOMContentLoaded", (domLoadedEvt) => {
+            $(".word-submit-form", this.game).on("submit", this.processNewWord.bind(this))
+            // $("#not-a-button", this.game).on("click", console.log('I asked you not to do that.').bind(this))
+        });
     }
 
     // add new row to scoring table with new word and word score
@@ -75,35 +76,33 @@ class GameOBoggle {
 
     async processNewWord(evt) {
         evt.preventDefault();
-        const $probyWord = $('#word', this.game)
-        let word = $probyWord.val()
-        if (!word) return;
-        randomNickname = getRandomItem(nicknames);
-        randomCompliment = getRandomItem(compliments)
-        if (this.doneWords.has(word)) {
-            this.displayMessage(`You already got ${word}, ${randomNickname}`, "error")
+        const $newWord = $('#new-word', this.game)
+        console.log($newWord.val())
+        const newWord = $newWord.val()
+        $newWord.val('').focus();
+        console.log (newWord)
+        if (!newWord) return;
+        if (this.doneWords.has(newWord)) {
+            this.displayMessage(`You already got ${newWord}, ${getRandomItem(nicknames)}`, "error")
             return;
         }
-
-        
-        const respnse = await axios.get("/played-word", { params: { word: word }});
+        const respnse = await axios.get("/played-word", { params: { word: newWord }});
         if (respnse.data.result === "not-word") {
-            this.displayMessage(`${word} is not in our dictionary, ${randomNickname}`, "error")
+            this.displayMessage(`${word} is not in our dictionary, ${getRandomItem(nicknames)}`, "error")
         } else if (respnse.data.result === "not-on-board") {
-            this.displayMessage(`${word} is not a valid play on this board, ${randomNickname}`, "error")
+            this.displayMessage(`${word} is not a valid play on this board, ${getRandomItem(nicknames)}`, "error")
         } else {
             wordScore = this.scoreWord(word);
             if (wordScore == 0) {
-                this.displayMessage(`${word} is not long enough, ${randomNickname}`, "error");
+                this.displayMessage(`${word} is not long enough, ${getRandomItem(nicknames)}`, "error");
             } else {
                 displayScore(word, wordScore)
                 this.gameScore += wordScore;
                 $('.running-score').text(this.gameScore)
                 this.doneWords.add(word);
-                this.showMessage(`${randomCompliment}, ${randomNickname}`, "info");
+                this.showMessage(`${getRandomItem(compliments)}, ${getRandomItem(nicknames)}`, "info");
             }
         }
-        $word.val('').focus();
     }
 
     // display timer in DOM
@@ -118,7 +117,7 @@ class GameOBoggle {
         this.showTimeLeft()
 
         if (this.secondsLeft === 0) {
-            clearInterval(this.timer);
+            clearInterval(this.countdownClock);
             await this.endGame();
         }
     }
@@ -126,12 +125,10 @@ class GameOBoggle {
     async endGame() {
         $('.word-submit-form', this.game).hide();
         const respnse = await axios.post('/post-score', { score: this.gameScore});
-        randomNickname = getRandomItem(nicknames);
-        randomCompliment = getRandomItem(compliments)
         if (respnse.data.newHighScore) {
-            this.displayMessage(`Congratulations, {randomNickname}. ${this.gameScore} is a new high score`, "info");
+            this.displayMessage(`Congratulations, {getRandomItem(nicknames)}. ${this.gameScore} is a new high score`, "info");
         } else {
-            this.displayMessage(`${randomCompliment}, ${randomNickname}, your fial score was ${this.gameScore}`)
+            this.displayMessage(`${getRandomItem(compliments)}, ${getRandomItem(nicknames)}, your fial score was ${this.gameScore}`)
         }
     }
 }
