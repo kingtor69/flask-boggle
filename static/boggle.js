@@ -33,15 +33,29 @@ class GameOBoggle {
 
     // add new row to scoring table with new word and word score
     displayScore(word, wordScore) {
+        const wordTd = document.createElement('td');
+        const scoreTd = document.createElement('td');
+        wordTd.innerText = word;
+        scoreTd.innerText = wordScore;
+        const scoringTr = document.createElement('tr');
+        scoringTr.appendChild(wordTd);
+        scoringTr.appendChild(scoreTd);
+        const scoringTbody = document.querySelector('.scoring')
+        scoringTbody.appendChild(scoringTr)
+    }
+
+    // jQuery was baffling me
+    displayScoreJQ(word, wordScore) {
+        debugger;
         const $wordTd = $('td.word');
         const $scoreTd = $('td.score');
         $wordTd.text = word;
         $scoreTd.text = wordScore;
-        const $newTr = $('tr');
-        $newTr.append($wordTd);
-        $newTr.append($scoreTd);
-        console.log($newTr)
-        $('.scoring', this.game).append($newTr);
+        const $scoringTr = $('tr');
+        $scoringTr.append($wordTd);
+        $scoringTr.append($scoreTd);
+        console.log($scoringTr)
+        $('tbody.scoring', this.game).append($scoringTr);
     }
 
     // scoring algorithm adapted by Tor rather loosely from official Boggle scoring for various table sizes as found on https://en.wikipedia.org/wiki/Boggle
