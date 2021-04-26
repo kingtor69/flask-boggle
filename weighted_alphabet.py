@@ -2,7 +2,7 @@
 # the information about common languages come from the Oxford Dictionary (11th edition revised, 2004) as presented on https://www.lexico.com/explore/which-letters-are-used-most
 # I've also used some of the common letter combinations some editions of Boggle used (as described on https://en.wikipedia.org/wiki/Boggle)
 
-from random import choice
+from random import choice, randint
 
 weighted_lowercase_alphabet = ""
 for j in range(10):
@@ -64,13 +64,13 @@ weighted_uppercase_alphabet = weighted_lowercase_alphabet.upper()
 def random_letter_plus_combos():
     ltr = choice(weighted_uppercase_alphabet)
     roll = ltr
-    if ltr = "Q":
+    if ltr == "Q":
         roll = "Qu"
-    elif ltr = "T":
-        if rand_int(3) == 1:
-            roll = "Th":
-    elif ltr = "I":
-        if rand_int(5) == 1:
+    elif ltr =="T":
+        if randint(1, 3) == 1:
+            roll = "Th"
+    elif ltr == "I":
+        if randint(1, 5) == 1:
             roll = "In"
     return roll
 

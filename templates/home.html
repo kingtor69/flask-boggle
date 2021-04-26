@@ -24,11 +24,11 @@
           </tr>
           <tr>
             <th scope="row">high score</th>
-            <td>{{ highscore }}</td>
+            <td>{{ session['highscore'] }}</td>
           </tr>
           <tr>
             <th scope="row">games played</th>
-            <td>{{ average_score }}</td>
+            <td>{{ session['average_score'] }}</td>
           </tr>
         </tbody>
       </table>
@@ -46,12 +46,10 @@
       <div class="card-body">
         <div class="card-title">
           <form action="/reset">
-            <button class="btn btn-block btn-danger text-warning">reset all Flask session data</button>
+            <button class="btn btn-block btn-danger text-warning">reset all saved game data</button>
           </form>
         </div>
-        <p class="m-2 card-text">this button is for development purposes
-          <br>it will clear all of the flask session data
-          <br>it is especially useful if you've taken both surveys and want to keep run-testing the app</p>
+        <p class="m-2 card-text">this button will clear all of your saved game data and I have yet to write in a warning pop-up, so only push it if you mean it</p>
       </div>
     </div>
   </div>

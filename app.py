@@ -6,61 +6,65 @@ from boggle import Boggle, this_game, compliments, nicknames
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "damn-secret"
 
+this_game = Boggle()
+
 @app.route('/')
 def load_home_page():
     """load home page to display high score, number of games played, average score"""
-
+    board_size = int(session.get('board_size', 5))
     highscore = int(session.get('high_score', '0'))
     average_score = int(session.get('average_score', '0'))
     game_num = int(session.get('game_num', '0'))
-    # if the game_num says games have been played and either of the other numbers are zero, something is wonky, so just reset and start over
+    # if the game_num says games have been played and either of the other numbers are zero, something is wonky, so reset and start over
     if highscore == 0 or averagescore == 0:
+        flash('something odd happened in the records of games', 'error')
+        flash("so we're starting over. Sorry for any inconvenience", 'info')
         session.clear()
+    session['board_size'] = board_size
     session['highscore'] = highscore
     session['average_score'] = average_score
-    session['game_num'] = game_num
     return render_template('home.html', highscore = highscore, game_num = game_num, average_score = average_score)
 
-@app.route('/board')
+@app.route('/board', methods=["GET", "POST"])
 def load_board():
     """set up the board and the game-play form"""
-    # raise
-    # request.args is giving me a lot of attitude right now, so I'm commenting it out whole I get the JS going
-    # if not request.args['game_on']:
-    #     flash('something went wrong, please try again', 'info')
-    #     return redirect('/')
 
-    # the game number returns from the form is incremented 1 from where it had been previously, so these lines are incrementing the game number
-    # game_num = request.args['game_on']
-    # session['game_num'] = game_num
+    game_num = session.get('game_num', request.args['game_on'])
+    session['game_num'] = game_num
     correct_words = session.get('correct_words', [])
-    this_game = Boggle()
     board = this_game.make_board()
     session['board'] = board
+    board_size = int(session.get('board_size', 5))
     flash("Let's play!", "info")
-    return render_template('game.html', board = board, len_correct_words = len(correct_words))
+    return render_template('game.html', board = board, len_correct_words = len(correct_words), board_size = board_size)
 
 @app.route('/played-word')
+def play_a_word():
+    """find out if word is a valid word
+    (valid: in our word list AND on the current board)"""
+    word = request.args["word"]
+    board = session["board"]
+    response = boggle_game.check_valid_word(board, word)
 
-# @app.route('/play')
-# def play_a_word():
-#     word = request.args['word']
-#     board = session['board']
-#     correct_words = session.get('correct_words', [])
-#     is_word_valid = this_game.check_valid_word(board, word)
-#     if is_word_valid == "ok":
-#         if correct_words.count(word) > 0:
-#             flash (f"You already got that word, {choice(nicknames)}.", "info")
-#         else:
-#             correct_words.append(word)
-#             session['correct_words'] = correct_words
-#             flash (choice(compliments), "thanks")
-#     else:
-#         flash (f"Sorry, {choice(nicknames)}, that word is {is_word_valid}.", "error")    
-#     return render_template('board.html', board = board, len_correct_words = len(correct_words))
+    return jsonify({'result': response})
+
+@app.route("/process-score", methods=["POST"])
+def process_score():
+    """receive score, update average_score, and update highscore if there is one."""
+
+    this_score = request.json["score"]
+    highscore = session.get("highscore", 0)
+    games_played = session.get("game_num", 1)
+    average_score = session.get("average_score", 0)
+    new_average = (average_score * (game_num - 1) + this_score) / game_num
+    session['average_score'] = average_score
+    session['highscore'] = max(score, highscore)
+
+    return jsonify(brokenRecord=score > highscore)
 
 @app.route('/reset')
 def reset_session_restart():
     session.clear()
     session['is_game_on'] = False
+    flash('I really hope you meant that, because I did.', 'troubleshooting')
     return redirect ('/')
