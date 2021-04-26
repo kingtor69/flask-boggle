@@ -149,9 +149,3 @@ class Boggle():
         # Sad panda.
 
         return False
-
-# from here down is entirely written by Tor Kingdon
-this_game = Boggle()
-
-compliments = ["good one!", "nice", "niiiiice", "beauty, eh?", "slick", "you're killing it!", "daddy needs a new pair of shoes", "snappy!", "momma's gotta bring home the bacon!", "yo", "¡muey caliente!", "delicious", "genau", "trés bien"]
-nicknames = ["slick", "fancypants", "homeslice", "cheeseball", "dog", "tiny", "biggie", "sneaky pie", "homey", "amigo", "knucklehead", "big dog", "two times", "shorty", "punch buggy", "buckethead", "grandma pumpkinhead", "homes", "bobby-bob"]

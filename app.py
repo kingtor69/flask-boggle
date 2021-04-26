@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, flash, jsonify, session
 from flask_debugtoolbar import DebugToolbarExtension
 from random import choice
-from boggle import Boggle, this_game, compliments, nicknames
+from boggle import Boggle
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "damn-secret"
@@ -37,7 +37,6 @@ def load_board():
     board = this_game.make_board()
     session['board'] = board
     board_size = int(session.get('board_size', 5))
-    flash("Let's play!", "info")
     return render_template('game.html', board = board, len_correct_words = len(correct_words), board_size = board_size)
 
 @app.route('/played-word')
@@ -46,7 +45,7 @@ def play_a_word():
 
     board = session["board"]
     word = request.args["word"]
-    response = boggle_game.check_valid_word(board, word)
+    response = this_game.check_valid_word(board, word)
 
     return jsonify({'result': response})
 

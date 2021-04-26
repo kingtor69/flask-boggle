@@ -1,5 +1,5 @@
 // Can you guess who wrote the JavaScript? That's right, Tor Kingdon, the same guy who wrote this console.log:
-console.log("What is this javascript stuff all about? And jQuery‽ I forgot. Let's see........")
+// console.log("What is this javascript stuff all about? And jQuery‽ I forgot. Let's see........")
 // I also borrowed liberally from the solution code by Rithm School and/or Springboard
 
 compliments = ["good one!", "nice", "niiiiice", "beauty, eh?", "slick", "you're killing it!", "daddy needs a new pair of shoes", "snappy!", "momma's gotta bring home the bacon!", "yo", "¡muey caliente!", "delicious", "genau", "trés bien"]
@@ -28,24 +28,25 @@ class GameOBoggle {
         // define new word submit button. yeah, it's kinda important for playing the game, ya know?
         document.addEventListener("DOMContentLoaded", (domLoadedEvt) => {
             $(".word-submit-form", this.game).on("submit", this.processNewWord.bind(this))
-            // $("#not-a-button", this.game).on("click", console.log('I asked you not to do that.').bind(this))
         });
     }
 
     // add new row to scoring table with new word and word score
     displayScore(word, wordScore) {
-        $scoreTd = $('td.score');
+        const $wordTd = $('td.word');
+        const $scoreTd = $('td.score');
         $wordTd.text = word;
         $scoreTd.text = wordScore;
-        $newTr = $('tr');
+        const $newTr = $('tr');
         $newTr.append($wordTd);
         $newTr.append($scoreTd);
+        console.log($newTr)
         $('.scoring', this.game).append($newTr);
     }
 
     // scoring algorithm adapted by Tor rather loosely from official Boggle scoring for various table sizes as found on https://en.wikipedia.org/wiki/Boggle
     scoreWord(word) {
-        score = 0;
+        let score = 0;
         if (word.length > this.boardSize/2) {
             score ++
         }
@@ -68,19 +69,23 @@ class GameOBoggle {
     }
 
     displayMessage(message, type) {
-        $(".messages", this.game)
+        const $messages = $(".messages", this.game);
+        $messages
             .text(message)
             .removeClass()
-            .addClass(`tags ${type}`)
+            .addClass(`tags ${type}`);
+        setTimeout(()=> {
+            $messages
+                .text('')
+                .removeClass();
+        }, 1000);
     }
 
     async processNewWord(evt) {
         evt.preventDefault();
         const $newWord = $('#new-word', this.game)
-        console.log($newWord.val())
         const newWord = $newWord.val()
         $newWord.val('').focus();
-        console.log (newWord)
         if (!newWord) return;
         if (this.doneWords.has(newWord)) {
             this.displayMessage(`You already got ${newWord}, ${getRandomItem(nicknames)}`, "error")
@@ -88,19 +93,19 @@ class GameOBoggle {
         }
         const respnse = await axios.get("/played-word", { params: { word: newWord }});
         if (respnse.data.result === "not-word") {
-            this.displayMessage(`${word} is not in our dictionary, ${getRandomItem(nicknames)}`, "error")
+            this.displayMessage(`"${newWord}" is not in our dictionary, ${getRandomItem(nicknames)}`, "error")
         } else if (respnse.data.result === "not-on-board") {
-            this.displayMessage(`${word} is not a valid play on this board, ${getRandomItem(nicknames)}`, "error")
+            this.displayMessage(`"${newWord}" is not a valid play on this board, ${getRandomItem(nicknames)}`, "error")
         } else {
-            wordScore = this.scoreWord(word);
+            let wordScore = this.scoreWord(newWord);
             if (wordScore == 0) {
-                this.displayMessage(`${word} is not long enough, ${getRandomItem(nicknames)}`, "error");
+                this.displayMessage(`"${newWord}" is not long enough, ${getRandomItem(nicknames)}`, "error");
             } else {
-                displayScore(word, wordScore)
+                this.displayScore(newWord, wordScore)
                 this.gameScore += wordScore;
                 $('.running-score').text(this.gameScore)
-                this.doneWords.add(word);
-                this.showMessage(`${getRandomItem(compliments)}, ${getRandomItem(nicknames)}`, "info");
+                this.doneWords.add(newWord);
+                this.displayMessage(`${getRandomItem(compliments)}, ${getRandomItem(nicknames)}`, "info");
             }
         }
     }
@@ -128,7 +133,7 @@ class GameOBoggle {
         if (respnse.data.newHighScore) {
             this.displayMessage(`Congratulations, {getRandomItem(nicknames)}. ${this.gameScore} is a new high score`, "info");
         } else {
-            this.displayMessage(`${getRandomItem(compliments)}, ${getRandomItem(nicknames)}, your fial score was ${this.gameScore}`)
+            this.displayMessage(`${getRandomItem(compliments)}, ${getRandomItem(nicknames)}, your final score was ${this.gameScore}`)
         }
     }
 }
