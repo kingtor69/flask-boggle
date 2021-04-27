@@ -31,7 +31,7 @@ def load_home_page():
 def load_board():
     """set up the board and the game-play form"""
 
-    game_num = session.get('game_num', request.args['game_on'])
+    game_num = request.args['game_on']
     session['game_num'] = game_num
     correct_words = session.get('correct_words', [])
     board = this_game.make_board()
