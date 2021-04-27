@@ -57,11 +57,39 @@ def process_score():
     highscore = session.get("highscore", 0)
     games_played = session.get("game_num", 1)
     average_score = session.get("average_score", 0)
-    new_average = (average_score * (game_num - 1) + this_score) / game_num
+    new_average = ((average_score * (games_played - 1) + this_score) / games_played)
     session['average_score'] = average_score
-    session['highscore'] = max(score, highscore)
+    if this_score > highscore:
+        msg = "That's a new high score"
+        clss = "hooray"
+        session['highscore'] = this_score
+    elif this_score == highscore:
+        msg = "You just tied the high score"
+        clss = "info"
+    else:
+        msg = ""
+        clss = "info"
 
-    return jsonify(brokenRecord=score > highscore)
+    return jsonify({'message': message, 'class': clss})
+
+@app.route("/display-results", methods=["GET"])
+def display_results():
+    """receive score, update average_score, and update highscore if there is one."""
+
+    this_score = int(request.args["score"])
+    flash(f"You got a score of {this_score}.")
+    highscore = session.get("highscore", 0)
+    games_played = session.get("game_num", 1)
+    average_score = session.get("average_score", 0)
+    new_average = ((average_score * (games_played - 1) + this_score) / games_played)
+    session['average_score'] = average_score
+    if this_score > highscore:
+        flash("NEW HIGH SCORE!!", "hooray")
+        session['highscore'] = this_score
+    elif this_score == highscore:
+        flash("You just tied the high score!", "info")
+
+    return render_template("home.html", highscore = highscore, game_num = games_played, average_score = new_average)
 
 @app.route('/reset')
 def reset_session_restart():

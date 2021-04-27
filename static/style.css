@@ -29,10 +29,13 @@ tag,
 	color: black;
 }
 
-.thanks {
-	border: 4px solid navy;
-	background-color: #00800099;
-	color: blue;
+.hooray {
+	border: 8px solid navy;
+	background-color: blue;
+	color: yellow;
+	font-size: 2rem;
+	margin: 20px;
+	padding: 20px;
 }
 
 table.boggle-board {

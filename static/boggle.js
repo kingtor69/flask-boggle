@@ -2,14 +2,14 @@
 // console.log("What is this javascript stuff all about? And jQuery‽ I forgot. Let's see........")
 // I also borrowed liberally from the solution code by Rithm School and/or Springboard
 
-compliments = ["good one!", "nice", "niiiiice", "beauty, eh?", "slick", "you're killing it!", "daddy needs a new pair of shoes", "snappy!", "momma's gotta bring home the bacon!", "yo", "¡muey caliente!", "delicious", "genau", "trés bien"]
+compliments = ["Good one", "Nice", "Niiiiice", "Beauty, eh?", "Slick", "You're killing it", "Daddy needs a new pair of shoes", "Snappy", "Momma's gotta bring home the bacon", "Yo", "Muey caliente", "Delicious", "Gans genau", "Trés bien"]
 nicknames = ["slick", "fancypants", "homeslice", "cheeseball", "dog", "tiny", "biggie", "sneaky pie", "homey", "amigo", "knucklehead", "big dog", "two times", "shorty", "punch buggy", "buckethead", "grandma pumpkinhead", "homes", "bobby-bob"]
 
 function getRandomItem(arr) {
     const randomI = Math.floor(Math.random() * arr.length);
     return arr[randomI]
-}
-
+};
+let messageCount = 0;
 
 class GameOBoggle {
     constructor(gameId, gameLength = 60, boardSize = 5) {
@@ -94,17 +94,21 @@ class GameOBoggle {
         return score
     }
 
-    displayMessage(message, type) {
-        const $messages = $(".messages", this.game);
+    displayMessage(message, type, stayForMsecs = 1500) {
+        const $messages = $("#messages", this.game);
+        $messages
+            .text('')
+            .removeClass();
         $messages
             .text(message)
             .removeClass()
             .addClass(`tags ${type}`);
+        messageCount ++
         setTimeout(()=> {
             $messages
                 .text('')
                 .removeClass();
-        }, 1000);
+        }, stayForMsecs);
     }
 
     async processNewWord(evt) {
@@ -155,11 +159,29 @@ class GameOBoggle {
 
     async endGame() {
         $('.word-submit-form', this.game).hide();
-        const respnse = await axios.post('/post-score', { score: this.gameScore});
-        if (respnse.data.newHighScore) {
-            this.displayMessage(`Congratulations, {getRandomItem(nicknames)}. ${this.gameScore} is a new high score`, "info");
-        } else {
-            this.displayMessage(`${getRandomItem(compliments)}, ${getRandomItem(nicknames)}, your final score was ${this.gameScore}`)
-        }
+        const resp = await axios.post("/post-score", { score: this.gameScore });
+        // console.log (resp)
+        this.displayMessage(`${getRandomItem(compliments)}! ${resp['message']} ${getRandomItem(nicknames)}.`, resp['class'])
     }
+
+    // endGame() {
+    //     $('.word-submit-form', this.game).hide();
+    //     this.displayMessage(`Congratulations, ${getRandomItem(nicknames)}. You got a score of ${this.gameScore}`, "info", 2500);
+    //     setTimeout(() => {
+    //         this.postEndGame();
+    //     }, 2500)
+    // }
+
+    // async postEndGame() {
+    //     $('.word-submit-form', this.game).hide();
+    //     await axios.post("/post-score", {data: { score: this.gameScore}});
+    //     // await axios.post("/post-score", data: { score: this.gameScore});
+    //     // await axios.post("/post-score", { score: this.gameScore});
+    // }
+
+    // async displayResults() {
+    //     await axios.get("/display-results, {params: { score: this.gameScore}});
+    //     // await axios.post("/post-score", data: { score: this.gameScore});
+    //     // await axios.post("/post-score", { score: this.gameScore});
+    // }
 }
