@@ -5,18 +5,6 @@ from boggle import Boggle
 from random import choice
 
 
-
-            # game is already going
-            #  with client.session_transaction() as change_session:
-            #     change_session['is_game_on'] = True
-            #     change_session['board'] = TEST_BOARD
-
-            # no game running
-            #  with client.session_transaction() as change_session:
-            #     change_session['is_game_on'] = False
-            #     res = client.get('/')
-
-
 class BoggleSetUpTests(TestCase):
 
     # TODO -- write tests for every view function / feature!
@@ -45,9 +33,6 @@ class BoggleGameplayTests(TestCase):
         with self.client.session_transaction() as sess:
             sess['board'] = [['K', 'U', 'J', 'M', 'I'], ['I', 'I', 'U', 'D', 'E'], ['C', 'V', 'K', 'S', 'O'], ['S', 'Z', 'E', 'R', 'S'], ['L', 'M', 'H', 'O', 'E']]
             sess['correct_words'] = ['mud', 'sod', 'zero', 'hoe']
-            # new_correct_words = ['judo', 'mid', 'dose', 'hero', 'horse', 'mess']
-            # not_in_dic_words = ['cvks', 'duks', 'ciiv', 'zerk']
-            # not_on_board_words = ['sour', 'ducks', 'civic', 'reek']
             sess['game_num'] = '1'
             sess['highscore'] = '5'
     
@@ -71,22 +56,3 @@ class BoggleGameplayTests(TestCase):
         res = self.client.get('/played-word?word=duks')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.json['result'], 'not-word')
-
-    # def test_post_high_score(self):
-    #     res = self.client.post('/post-score', data={"score": "9"})
-    #     self.assertEqual(res.json['message'], 'new high score')
-
-    # def test_post_tied_score(self):
-    #     res = self.client.post('/post-score', data={"score": "5"})
-    #     self.assertEqual(res.json['message'], 'you just tied the high score')
-
-    # def test_post_score(self):
-    #     res = self.client.post('/post-score', data={"score": "3"})
-    #     self.assertEqual(res.json['message'], 'good game')
-
-# class BoggleResultsTests(TestCase):
-#     def test_display_results(self):
-#         with app.test_client() as client:
-#             res = self.client.get('/display-results?score=9')
-#             html = res.get_data(as_text=True)
-#             self.assertEqual(res.status_code, 200)

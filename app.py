@@ -14,11 +14,11 @@ this_game = Boggle()
 def load_home_page():
     """load home page to display high score, number of games played, average score"""
     board_size = int(session.get('board_size', 5))
-    highscore = int(session.get('high_score', '0'))
+    highscore = int(session.get('highscore', '0'))
     average_score = int(session.get('average_score', '0'))
     game_num = int(session.get('game_num', '0'))
     # if the game_num says games have been played and either of the other numbers are zero, something is wonky, so reset and start over
-    if highscore == 0 or averagescore == 0:
+    if highscore == 0 or average_score == 0:
         flash('something odd happened in the records of games', 'error')
         flash("so we're starting over. Sorry for any inconvenience", 'info')
         session.clear()
@@ -52,44 +52,49 @@ def play_a_word():
 @app.route("/post-score", methods=["POST"])
 def process_score():
     """receive score, update average_score, and update highscore if there is one."""
-
-    this_score = request.json["score"]
-    highscore = session.get("highscore", 0)
-    games_played = session.get("game_num", 1)
-    average_score = session.get("average_score", 0)
-    new_average = ((average_score * (games_played - 1) + this_score) / games_played)
-    session['average_score'] = average_score
-    if this_score > highscore:
+    # print('endendendendend ------- ')
+    game_score = request.json['score']
+    # print(game_score)
+    # print(type(game_score))
+    # print('dammit')
+    # msg = "massage"
+    # clss = "classe"
+    highscore = int(session.get("highscore", 0))
+    games_played = int(session.get("game_num", 1))
+    average_score = int(session.get("average_score", 0))
+    new_average = ((average_score * (games_played - 1) + game_score) / games_played)
+    session['average_score'] = new_average
+    if game_score > highscore:
         msg = "That's a new high score"
         clss = "hooray"
-        session['highscore'] = this_score
-    elif this_score == highscore:
+        session['highscore'] = game_score
+    elif game_score == highscore:
         msg = "You just tied the high score"
         clss = "info"
     else:
         msg = ""
         clss = "info"
 
-    return jsonify({'message': message, 'class': clss})
+    return jsonify({'message': msg, 'class': clss})
 
-@app.route("/display-results", methods=["GET"])
-def display_results():
-    """receive score, update average_score, and update highscore if there is one."""
+# @app.route("/display-results", methods=["GET"])
+# def display_results():
+#     """receive score, update average_score, and update highscore if there is one."""
 
-    this_score = int(request.args["score"])
-    flash(f"You got a score of {this_score}.")
-    highscore = session.get("highscore", 0)
-    games_played = session.get("game_num", 1)
-    average_score = session.get("average_score", 0)
-    new_average = ((average_score * (games_played - 1) + this_score) / games_played)
-    session['average_score'] = average_score
-    if this_score > highscore:
-        flash("NEW HIGH SCORE!!", "hooray")
-        session['highscore'] = this_score
-    elif this_score == highscore:
-        flash("You just tied the high score!", "info")
+#     this_score = request.args["score"]
+#     flash(f"You got a score of {this_score}.")
+#     highscore = session.get("highscore", 0)
+#     games_played = session.get("game_num", 1)
+#     average_score = session.get("average_score", 0)
+#     new_average = ((average_score * (games_played - 1) + this_score) / games_played)
+#     session['average_score'] = average_score
+#     if this_score > highscore:
+#         flash("NEW HIGH SCORE!!", "hooray")
+#         session['highscore'] = this_score
+#     elif this_score == highscore:
+#         flash("You just tied the high score!", "info")
 
-    return render_template("home.html", highscore = highscore, game_num = games_played, average_score = new_average)
+#     return render_template("home.html", highscore = highscore, game_num = games_played, average_score = new_average)
 
 @app.route('/reset')
 def reset_session_restart():

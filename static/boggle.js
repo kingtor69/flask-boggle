@@ -160,28 +160,8 @@ class GameOBoggle {
     async endGame() {
         $('.word-submit-form', this.game).hide();
         const resp = await axios.post("/post-score", { score: this.gameScore });
-        // console.log (resp)
-        this.displayMessage(`${getRandomItem(compliments)}! ${resp['message']} ${getRandomItem(nicknames)}.`, resp['class'])
+        console.log(resp)
+        this.displayMessage(`${getRandomItem(compliments)}! ${resp.data.message} ${getRandomItem(nicknames)}.`, resp.data.class, 3000)
+        setTimeout(window.location.replace("/"), 5000);
     }
-
-    // endGame() {
-    //     $('.word-submit-form', this.game).hide();
-    //     this.displayMessage(`Congratulations, ${getRandomItem(nicknames)}. You got a score of ${this.gameScore}`, "info", 2500);
-    //     setTimeout(() => {
-    //         this.postEndGame();
-    //     }, 2500)
-    // }
-
-    // async postEndGame() {
-    //     $('.word-submit-form', this.game).hide();
-    //     await axios.post("/post-score", {data: { score: this.gameScore}});
-    //     // await axios.post("/post-score", data: { score: this.gameScore});
-    //     // await axios.post("/post-score", { score: this.gameScore});
-    // }
-
-    // async displayResults() {
-    //     await axios.get("/display-results, {params: { score: this.gameScore}});
-    //     // await axios.post("/post-score", data: { score: this.gameScore});
-    //     // await axios.post("/post-score", { score: this.gameScore});
-    // }
 }

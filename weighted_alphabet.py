@@ -64,13 +64,15 @@ weighted_uppercase_alphabet = weighted_lowercase_alphabet.upper()
 def random_letter_plus_combos():
     ltr = choice(weighted_uppercase_alphabet)
     roll = ltr
-    if ltr == "Q":
-        roll = "Qu"
-    elif ltr =="T":
-        if randint(1, 3) == 1:
-            roll = "Th"
-    elif ltr == "I":
-        if randint(1, 5) == 1:
-            roll = "In"
+    # this wasn't working
+    # it's going to have to wait for future development
+    # if ltr == "Q":
+    #     roll = "Qu"
+    # elif ltr =="T":
+    #     if randint(1, 3) == 1:
+    #         roll = "Th"
+    # elif ltr == "I":
+    #     if randint(1, 5) == 1:
+    #         roll = "In"
     return roll
 
