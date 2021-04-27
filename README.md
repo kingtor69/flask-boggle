@@ -4,4 +4,6 @@
 ## Tor Kingdon
 
 Boggle project using Flask and JavaScript, Python, Jinja, etc, etc.
-Focused primarily on testing.
+Focused primarily on testing with Python/Flask unittest.
+
+There are also some Jasmine tests in static/jasmine/index.html

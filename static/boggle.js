@@ -44,7 +44,7 @@ class GameOBoggle {
         scoringTbody.appendChild(scoringTr)
     }
 
-    // jQuery was baffling me
+    // jQuery was driving me bananas
     displayScoreJQ(word, wordScore) {
         debugger;
         const $wordTd = $('td.word');
@@ -61,23 +61,35 @@ class GameOBoggle {
     // scoring algorithm adapted by Tor rather loosely from official Boggle scoring for various table sizes as found on https://en.wikipedia.org/wiki/Boggle
     scoreWord(word) {
         let score = 0;
-        if (word.length > this.boardSize/2) {
+        // 5x5 minimum 3-letter words
+        // 6x6 minimum 4-letter words
+        if (word.length > Math.floor(this.boardSize/2)) {
             score ++
         }
+        // 5x5 2 points for 4-letter words
+        // 6x6 2 points for 5-letter words
         if (word.length >= this.boardSize*0.8) {
             score ++
         }
+        // 5x5 3 points for 5-letter words
+        // 6x6 3 points for 6-letter words
         if (word.length >= this.boardSize) {
             score ++
         }
+        // 5x5 5 points for 6-letter words
+        // 6x6 5 points for 8-letter words
         if (word.length >= this.boardSize*1.2) {
             score += 2
         }
-        if (word.length >= this.boardSize*1.5) {
+        // 5x5 8 points for 7-letter words
+        // 6x6 8 points for 9-letter words
+        if (word.length >= this.boardSize*1.4) {
             score += 3
         }
-        if (score > 7) {
-            score += (word.length - Math.floor(this.boardSize*1.5) *2)
+        // 5x5 8th and subsequent letters worth 2 points each
+        // 6x6 10th letter worth 4 points, 2 points for each letter after that
+        if (score >= 8) {
+            score += ((word.length - (Math.floor(this.boardSize*1.4))) *2)
         }
         return score
     }

@@ -5,8 +5,8 @@
 {% block content %}
 <div class="container fluid">
     <section id="boggle">
-        <div class="row justify-content-center">
-            <div class="col">
+        <div class="row justify-content-around">
+            <div class="col-12 col-md-8 col-lg-6">
                 <table class="boggle-board">
                     <thead class="text-center">
                         <tr>
@@ -24,12 +24,18 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="row">
-            <hr>
-        </div>
-        <div class="row ">
-            <div class="col-6">
+            <div class="col-6 col-md-4 col-lg-3">
+                <table>
+                    <thead>
+                        <th class="h3 border-rounded border-primary">words &nbsp; &nbsp;</th>
+                        <th class="h3 border-rounded border-primary">score</th>
+                    </thead>
+                    <tbody class="scoring">
+                        <!-- JS/jQuery will populate this score -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-6 col-md-4 col-lg-3">
                 <div class="row">
                     <div class="col">
                         <h3>
@@ -63,17 +69,6 @@
                         </p>
                     </div>
                 </div>
-            </div>
-            <div class="col-6">
-                <table>
-                    <thead>
-                        <th class="h3 border-rounded border-primary">words &nbsp; &nbsp;</th>
-                        <th class="h3 border-rounded border-primary">score</th>
-                    </thead>
-                    <tbody class="scoring">
-                        <!-- JS/jQuery will populate this score -->
-                    </tbody>
-                </table>
             </div>
         </div>
     </section>
