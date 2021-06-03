@@ -1,6 +1,4 @@
-// Can you guess who wrote the JavaScript? That's right, Tor Kingdon, the same guy who wrote this console.log:
-// console.log("What is this javascript stuff all about? And jQuery‽ I forgot. Let's see........")
-// I also borrowed liberally from the solution code by Rithm School and/or Springboard
+// JavaScript written by Tor Kingdon with some logic taken from adapted from the solution code by Colt Steele and/or Rithm School and/or Springboard
 
 compliments = ["Good one", "Nice", "Niiiiice", "Beauty, eh?", "Slick", "You're killing it", "Daddy needs a new pair of shoes", "Snappy", "Momma's gotta bring home the bacon", "Yo", "Muey caliente", "Delicious", "Gans genau", "Trés bien"]
 nicknames = ["slick", "fancypants", "homeslice", "cheeseball", "dog", "tiny", "biggie", "sneaky pie", "homey", "amigo", "knucklehead", "big dog", "two times", "shorty", "punch buggy", "buckethead", "grandma pumpkinhead", "homes", "bobby-bob"]
@@ -23,15 +21,17 @@ class GameOBoggle {
         this.game = $("#" + gameId)
 
         // of course JS works in msec, so each second is sent out every 1000 ms
+        // countdownClock written by Colt Steele and/or Rithm School and/or Springboard
         this.countdownClock = setInterval(this.second.bind(this), 1000);
 
-        // define new word submit button. yeah, it's kinda important for playing the game, ya know?
+        // define new word submit button
         document.addEventListener("DOMContentLoaded", (domLoadedEvt) => {
             $(".word-submit-form", this.game).on("submit", this.processNewWord.bind(this))
         });
     }
 
     // add new row to scoring table with new word and word score
+    // written without jQuery
     displayScore(word, wordScore) {
         const wordTd = document.createElement('td');
         const scoreTd = document.createElement('td');
@@ -44,7 +44,7 @@ class GameOBoggle {
         scoringTbody.appendChild(scoringTr)
     }
 
-    // jQuery was driving me bananas
+    // same thing with jQuery
     displayScoreJQ(word, wordScore) {
         debugger;
         const $wordTd = $('td.word');
@@ -146,7 +146,7 @@ class GameOBoggle {
     }
 
     // run the timer
-
+    // timer written by Colt Steele and/or Rithm School and/or Springboard
     async second() {
         this.secondsLeft -= 1;
         this.showTimeLeft()
@@ -160,7 +160,6 @@ class GameOBoggle {
     async endGame() {
         $('.word-submit-form', this.game).hide();
         const resp = await axios.post("/post-score", { score: this.gameScore });
-        console.log(resp)
         this.displayMessage(`${getRandomItem(compliments)}! ${resp.data.message} ${getRandomItem(nicknames)}.`, resp.data.class, 3000)
         setTimeout(window.location.replace("/"), 5000);
     }
