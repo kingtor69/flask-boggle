@@ -4,57 +4,68 @@
 {% block header %}Boggle it Up{% endblock %}
 {% block content %}
 <div class="container">
-  <div class="row d-none">
-    <h2>instructions:</h2>
-    <p>Maybe I should write some instructions. Maybe I won't, though.</p>
-  </div>
-  {% if game_num > 0 %}
-  <div class="row">
-    <div class="col-md-6">
-      <table class="table table-dark table-striped text-light">
-        <thead>
-          <tr>
-            <th scope="col" colspan="2" class="text-center">STATISTICS:</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">games played</th>
-            <td>{{ game_num }}</td>
-          </tr>
-          <tr>
-            <th scope="row">high score</th>
-            <td>{{ session['highscore'] }}</td>
-          </tr>
-          <tr>
-            <th scope="row">average score</th>
-            <td>{{ session['average_score'] }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  {% endif %}
-</div>
-<form action="/board" method="GET">
-    <h2><button class="btn btn-outline-primary rounded btn-block" name="game_on" value="{{ game_num + 1 }}">play game #{{ game_num + 1 }}</button></h2>
-  </form>
-  <br>
-  <br>
   <div class="row justify-content-center">
-    <div class="card bg-dark text-light">
-      <div class="card-body">
-        <div class="card-title">
-          <form action="/reset">
-            <button class="btn btn-block btn-danger text-warning">reset all saved game data</button>
+    <div class="col d-none d-md-block col-2 col-lg-3"></div>
+    <div class="col d-none d-md-block col-8 col-lg-6">
+      <div class="row d-none">
+        <h2>instructions:</h2>
+        <p>Maybe I should write some instructions. Maybe I won't, though.</p>
+      </div>
+      {% if game_num > 0 %}
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table table-dark table-striped text-light">
+              <thead>
+                <tr>
+                  <th scope="col" colspan="2" class="text-center">STATISTICS:</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">games played</th>
+                  <td>{{ game_num }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">high score</th>
+                  <td>{{ session['highscore'] }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">average score</th>
+                  <td>{{ session['average_score'] }}</td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <form action="/board" method="GET">
+                      <h2><button class="btn btn-outline-primary rounded btn-block" name="game_on" value="{{ game_num + 1 }}">play game #{{ game_num + 1 }}</button></h2>
+                    </form>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br>
+            <br>
+              <div class="card bg-dark text-light">
+                <div class="card-body">
+                  <div class="card-title">
+                    <form action="/reset">
+                      <button class="btn btn-block btn-danger text-warning">reset all saved game data</button>
+                    </form>
+                  </div>
+                  <p class="m-2 card-text">
+                    this button will clear all of your saved game data<br>
+                    only push it if you mean it
+                  </p>
+                </div>
+              </div>
+            </div>
+      {% else %}
+        <div class="container">
+          <form action="/board" method="GET">
+            <h2><button class="btn btn-outline-primary rounded btn-block px-5" name="game_on" value="{{ game_num + 1 }}">play game #{{ game_num + 1 }}</button></h2>
           </form>
         </div>
-        <p class="m-2 card-text">this button will clear all of your saved game data and I have yet to write in a warning pop-up, so only push it if you mean it</p>
-      </div>
+      {% endif %}
     </div>
   </div>
-</div>
-<div class="row justify-content-center">
-</div>
 </div>
 {% endblock %}
