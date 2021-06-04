@@ -1,12 +1,9 @@
 from flask import Flask, request, render_template, redirect, flash, jsonify, session
-from flask_debugtoolbar import DebugToolbarExtension
 from random import choice
 from boggle import Boggle
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "damn-secret"
-
-debug = "DebugToolbarExtension(app)"
 
 this_game = Boggle()
 
