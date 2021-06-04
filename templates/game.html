@@ -23,6 +23,34 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <table class="table table-dark table-striped text-light statistics">
+                    <thead>
+                      <tr>
+                        <th scope="col" colspan="2" class="text-center">STATISTICS:</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">games played</th>
+                        <td>{{ game_num }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">high score</th>
+                        <td>{{ session['highscore'] }}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">average score</th>
+                        <td>{{ session['average_score'] }}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="2">
+                          <form action="/board" method="GET">
+                            <h2><button class="btn btn-outline-primary rounded btn-block" name="game_on" value="{{ game_num + 1 }}">play game #{{ game_num + 1 }}</button></h2>
+                          </form>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
             </div>
             <div class="col-6 col-md-4 col-lg-3">
                 <table>

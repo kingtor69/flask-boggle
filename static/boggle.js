@@ -11,6 +11,13 @@ let messageCount = 0;
 
 class GameOBoggle {
     constructor(gameId, gameLength = 60, boardSize = 5) {
+        // show board and word form
+        $('.boggle-board', this.game).show();
+        $('.word-submit-form', this.game).show();
+        
+        // hide statistics table
+        $('.statistics', this.game).hide();
+
         // game_length measured in seconds
         this.secondsLeft = gameLength;
         this.boardSize = boardSize;
@@ -159,8 +166,10 @@ class GameOBoggle {
 
     async endGame() {
         $('.word-submit-form', this.game).hide();
+        $('.boggle-board', this.game).hide();
+        $('.statistics', this.game).show();
         const resp = await axios.post("/post-score", { score: this.gameScore });
-        this.displayMessage(`${getRandomItem(compliments)}! ${resp.data.message} ${getRandomItem(nicknames)}.`, resp.data.class, 3000)
-        setTimeout(window.location.replace("/"), 5000);
+        this.displayMessage(`${getRandomItem(compliments)}! ${resp.data.message} ${getRandomItem(nicknames)}.`, resp.data.class, 3000);
+        // setTimeout(window.location.replace("/"), 5000);
     }
 }

@@ -28,13 +28,16 @@ def load_home_page():
 def load_board():
     """set up the board and the game-play form"""
 
-    game_num = request.args['game_on']
+    board_size = int(session.get('board_size', 5))
+    highscore = int(session.get('highscore', 0))
+    average_score = int(session.get('average_score', 0))
+    game_num = int(request.args['game_on'])
     session['game_num'] = game_num
     correct_words = session.get('correct_words', [])
     board = this_game.make_board()
     session['board'] = board
     board_size = int(session.get('board_size', 5))
-    return render_template('game.html', board = board, len_correct_words = len(correct_words), board_size = board_size)
+    return render_template('game.html', highscore = highscore, game_num = game_num, average_score = average_score, board = board, len_correct_words = len(correct_words), board_size = board_size)
 
 @app.route('/played-word')
 def play_a_word():

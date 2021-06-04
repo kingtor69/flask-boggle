@@ -34,10 +34,14 @@
                   <td>{{ session['average_score'] }}</td>
                 </tr>
                 <tr>
-                  <td colspan="2">
+                  <td>
                     <form action="/board" method="GET">
                       <h2><button class="btn btn-outline-primary rounded btn-block" name="game_on" value="{{ game_num + 1 }}">play game #{{ game_num + 1 }}</button></h2>
                     </form>
+                  </td>
+                  <td>
+                    <form action="/" method="GET">
+                    <h2><button class="btn btn-outline-secondary rounded btn-block">back to home page</button></h2></form>
                   </td>
                 </tr>
               </tbody>
