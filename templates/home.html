@@ -34,6 +34,9 @@
                   <td>{{ session['average_score'] }}</td>
                 </tr>
                 <tr>
+                  <td colspan="2"><i>There is a known bug wherein the averages are calculated not including the most recent game played.<br><small>This bug appeared on deployment, and does not show up on a development server, making debugging a bit tricky, but I’ll get it. :D</small></i></td>
+                </tr>
+                <tr>
                   <td>
                     <form action="/board" method="GET">
                       <h2><button class="btn btn-outline-primary rounded btn-block" name="game_on" value="{{ game_num + 1 }}">play game #{{ game_num + 1 }}</button></h2>
