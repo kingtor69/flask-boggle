@@ -66,10 +66,12 @@ def process_score():
     average_score = int(session.get("average_score", 0))
     new_average = ((average_score * (games_played - 1) + game_score) / games_played)
     session['average_score'] = new_average
+    new_high = highscore
     if game_score > highscore:
         msg = "That's a new high score"
         clss = "hooray"
-        session['highscore'] = game_score
+        new_high = game_score
+        session['highscore'] = new_high
     elif game_score == highscore:
         msg = "You just tied the high score"
         clss = "info"
@@ -77,7 +79,7 @@ def process_score():
         msg = ""
         clss = "info"
 
-    return jsonify({'message': msg, 'class': clss})
+    return jsonify({'message': msg, 'class': clss, 'highscore': new_high, 'average_score': new_average})
 
 @app.route('/reset')
 def reset_session_restart():

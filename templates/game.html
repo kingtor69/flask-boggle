@@ -34,22 +34,32 @@
                         <th scope="row">games played</th>
                         <td>{{ game_num }}</td>
                       </tr>
+                      <!-- this is where the bug is, template is being rendered with un-updated highscore and average_score -->
                       <tr>
                         <th scope="row">high score</th>
-                        <td>{{ session['highscore'] }}</td>
+                        <td id="highscore"></td>
                       </tr>
                       <tr>
                         <th scope="row">average score</th>
-                        <td>{{ session['average_score'] }}</td>
+                        <td id="average_score"></td>
                       </tr>
                       <tr>
-                        <td colspan="2"><i>There is a known bug wherein the averages are calculated not including the most recent game played. I&rsquo;m working on it.</td>
-                      </tr>
-                      <tr>
-                        <td colspan="2">
+                        <td>
                           <form action="/board" method="GET">
                             <h2><button class="btn btn-outline-primary rounded btn-block" name="game_on" value="{{ game_num + 1 }}">play game #{{ game_num + 1 }}</button></h2>
                           </form>
+                        </td>
+                        <td>
+                            <form action="/reset">
+                                <button class="btn btn-block btn-danger text-warning">reset <b>all</b> saved game data</button>
+                              </form>
+                            </div>
+                            <p class="m-2 card-text"><i><small>
+                              this button will clear <br>
+                              <b>all</b> of your saved game data<br>
+                              only push it if you mean it
+                            </small></i></p>
+                          </div>
                         </td>
                       </tr>
                     </tbody>

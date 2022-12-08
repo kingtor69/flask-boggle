@@ -167,9 +167,12 @@ class GameOBoggle {
     async endGame() {
         $('.word-submit-form', this.game).hide();
         $('.boggle-board', this.game).hide();
-        $('.statistics', this.game).show();
         const resp = await axios.post("/post-score", { score: this.gameScore });
+        $('.statistics', this.game).show();
+        $('#highscore').text(resp.data.highscore);
+        $('#average_score').text(resp.data.average_score);
         this.displayMessage(`${getRandomItem(compliments)}! ${resp.data.message} ${getRandomItem(nicknames)}.`, resp.data.class, 3000);
         // setTimeout(window.location.replace("/"), 5000);
+
     }
 }
