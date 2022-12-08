@@ -7,9 +7,16 @@
   <div class="row justify-content-center">
     <div class="col d-none d-md-block col-2 col-lg-3"></div>
     <div class="col d-none d-md-block col-8 col-lg-6">
-      <div class="row d-none">
+      <div class="row">
         <h2>instructions:</h2>
-        <p>Maybe I should write some instructions. Maybe I won't, though.</p>
+        <ul>
+          <li>type words you can make from the lettered tiles by using adjacent tiles</li>
+          <li>each tile can only be used once in any given word</li>
+          <li>&ldquo;adjacent&rdquo; includes diagonals</li>
+          <li>minimum word length is 3 letters</li>
+          <li>more letters means more points for a word</li>
+          <li>when time runs out, that game is over and you will be taken to a results page, which will include high score and average score over number of games played in a particular session</li>
+        </ul>
       </div>
       {% if game_num > 0 %}
         <div class="row">
