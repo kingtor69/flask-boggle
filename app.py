@@ -14,11 +14,19 @@ def load_home_page():
     highscore = int(session.get('highscore', '0'))
     average_score = int(session.get('average_score', '0'))
     game_num = int(session.get('game_num', '0'))
-    # if the game_num says games have been played and either of the other numbers are zero, something is wonky, so reset and start over
-    if highscore == 0 or average_score == 0:
+    need_reset = False
+    # if game_num or highscore or average_score are less than zero, something is wonky
+    if game_num < 0 or highscore < 0 or average_score < 0:
+        need_reset = True
+    # if the game_num says games have been played and either of the other numbers are zero, something is wonky
+    elif game_num > 0 and (highscore == 0 or average_score == 0):
+        need_reset = True
+    # if something is wonky, reset and start over
+    if need_reset:
         flash('something odd happened in the records of games', 'error')
         flash("so we're starting over. Sorry for any inconvenience", 'info')
         session.clear()
+
     session['board_size'] = board_size
     session['highscore'] = highscore
     session['average_score'] = average_score
